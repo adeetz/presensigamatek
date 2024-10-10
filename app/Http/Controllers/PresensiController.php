@@ -356,6 +356,16 @@ class PresensiController extends Controller
             ->orderBy('tgl_presensi')
             ->get();
 
+            if (isset($_POST['exportexcel'])) {
+                $time = date("d-M-Y H-i-s");
+                header("Content-Type: application/vnd.ms-excel");
+                header("Content-Disposition: attachment;filename=\"Rekap_Presensi_Karyawan_$time.xls\"");
+                header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+
+                header("Cache-Control: max-age=0");
+                return view('presensi.cetaklaporanexcel', compact('bulan', 'tahun', 'namabulan', 'karyawan', 'presensi'));
+            }
+
         // Mengirim data ke view
         return view('presensi.cetaklaporan', compact('bulan', 'tahun', 'namabulan', 'karyawan', 'presensi'));
     }
@@ -432,6 +442,16 @@ class PresensiController extends Controller
             ->whereYear('tgl_presensi', $tahun)
             ->groupBy('presensi.nik', 'karyawan.nama_lengkap')
             ->get();
+
+            if (isset($_POST['exportexcel'])) {
+                $time = date("d-M-Y H-i-s");
+                header("Content-Type: application/vnd.ms-excel");
+                header("Content-Disposition: attachment;filename=\"Rekap_Presensi_Karyawan_$time.xlsx\"");
+                header("Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+
+                header("Cache-Control: max-age=0");
+            }
+            
     
             return view('presensi.cetakrekap', compact('bulan', 'tahun', 'namabulan', 'rekap'));
     }

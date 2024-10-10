@@ -83,7 +83,7 @@
                             </div>
                             <div class="col-3">
                                 <div class="form-group">
-                                    <button type="button" id="btnExport" class="btn btn-success w-100">
+                                    <button type="button" name="exportexcel" id="exportexcel" class="btn btn-success w-100">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                             stroke-linecap="round" stroke-linejoin="round"
@@ -110,13 +110,30 @@
 
     <!-- Tambahkan logika JavaScript untuk validasi -->
 <!-- Tambahkan logika JavaScript untuk validasi -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> <!-- Ensure you include SweetAlert2 -->
+
 <script>
     document.getElementById('btnCetak').addEventListener('click', function () {
+        var bulan = document.getElementById('bulan').value;
+        var tahun = document.getElementById('tahun').value;
         var nik = document.getElementById('nik').value;
-        if (nik === "") {
+
+        if (bulan === "") {
             Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
+                icon: 'warning',
+                title: 'Warning',
+                text: 'Silakan pilih bulan sebelum mencetak laporan!',
+            });
+        } else if (tahun === "") {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Warning',
+                text: 'Silakan pilih tahun sebelum mencetak laporan!',
+            });
+        } else if (nik === "") {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Warning',
                 text: 'Silakan pilih karyawan sebelum mencetak laporan!',
             });
         } else {
@@ -124,16 +141,31 @@
         }
     });
 
-    document.getElementById('btnExport').addEventListener('click', function () {
+    document.getElementById('exportexcel').addEventListener('click', function () {
+        var bulan = document.getElementById('bulan').value;
+        var tahun = document.getElementById('tahun').value;
         var nik = document.getElementById('nik').value;
-        if (nik === "") {
+
+        if (bulan === "") {
             Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
+                icon: 'warning',
+                title: 'Warning',
+                text: 'Silakan pilih bulan sebelum mengekspor laporan!',
+            });
+        } else if (tahun === "") {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Warning',
+                text: 'Silakan pilih tahun sebelum mengekspor laporan!',
+            });
+        } else if (nik === "") {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Warning',
                 text: 'Silakan pilih karyawan sebelum mengekspor laporan!',
             });
         } else {
-            // Tambahkan input hidden untuk exportexcel jika tombol export diklik
+            // If all fields are filled, create a hidden input for exporting
             var form = document.getElementById('laporanForm');
             var exportInput = document.createElement('input');
             exportInput.type = 'hidden';
@@ -141,8 +173,10 @@
             exportInput.value = 'true';
             form.appendChild(exportInput);
             
-            form.submit();
+            form.submit(); // Submit the form
         }
     });
 </script>
+
+
 @endsection

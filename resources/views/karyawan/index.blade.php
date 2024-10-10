@@ -21,15 +21,20 @@
                             <div class="row">
                                 <div class="col-12">
                                     @if (Session::get('success'))
-                                    <div class="alert alert-success">
-                                        {{ Session::get('success') }}
-                                    </div>
-                                @endif
-                                @if (Session::get('warning'))
-                                    <div class="alert alert-warning">
-                                        {{ Session::get('warning') }}
-                                    </div>
-                                @endif     
+                                        <div class="alert alert-success">
+                                            {{ Session::get('success') }}
+                                        </div>
+                                    @endif
+                                    @if (Session::get('warning'))
+                                        <div class="alert alert-warning">
+                                            {{ Session::get('warning') }}
+                                        </div>
+                                    @endif
+                                    @if ($errors->has('nik'))
+                                        <div class="alert alert-danger">
+                                            {{ $errors->first('nik') }}
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
                             <div class="row">

@@ -36,51 +36,68 @@ class KaryawanController extends Controller
     }
 
     public function store(Request $request)
-    {
-        // Validasi input
-        $request->validate([
-            'nik' => 'required|string|max:20|unique:karyawan',
-            'nama_lengkap' => 'required|string|max:255',
-            'jabatan' => 'required|string|max:255',
-            'no_hp' => 'required|string|max:15',
-            'kode_dept' => 'required|string|max:10',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validasi foto
-        ]);
+{
+    // Validasi input dengan pesan kustom
+    $request->validate([
+        'nik' => 'required|string|max:20|unique:karyawan,nik',
+        'nama_lengkap' => 'required|string|max:255',
+        'jabatan' => 'required|string|max:255',
+        'no_hp' => 'required|string|max:15',
+        'kode_dept' => 'required|string|max:10',
+        'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+    ], [
+        'nik.unique' => 'NIK sudah terdaftar, masukkan NIK lain.',
+        'nik.required' => 'NIK harus diisi.',
+        // Pesan kustom lainnya dapat ditambahkan di sini
+    ]);
 
-        $nik = $request->nik;
-        $nama_lengkap = $request->nama_lengkap;
-        $jabatan = $request->jabatan;
-        $no_hp = $request->no_hp;
-        $kode_dept = $request->kode_dept;
-        $password = Hash::make('gamatek24'); // Hash password default
+    $nik = $request->nik;
+    $nama_lengkap = $request->nama_lengkap;
+    $jabatan = $request->jabatan;
+    $no_hp = $request->no_hp;
+    $kode_dept = $request->kode_dept;
+    $password = Hash::make('gamatek24');  // Password default
 
-        // Cek apakah ada file foto
-        $foto = null; // Inisialisasi foto
-        if ($request->hasFile('foto')) {
-            $foto = $nik . '.' . $request->file('foto')->getClientOriginalExtension();
-            $folderPath = 'uploads/karyawan/';
-            $request->file('foto')->storeAs($folderPath, $foto, 'public'); // Simpan ke storage public
-        }
-
-        try {
-            // Siapkan data untuk disimpan
-            $data = [
-                'nik' => $nik,
-                'nama_lengkap' => $nama_lengkap,
-                'jabatan' => $jabatan,
-                'no_hp' => $no_hp,
-                'kode_dept' => $kode_dept,
-                'foto' => $foto,
-                'password' => $password
-            ];
-
-            // Simpan data ke database
-            DB::table('karyawan')->insert($data);
-            return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
-        } catch (\Exception $e) {
-            return Redirect::back()->with(['warning' => 'Data Gagal Disimpan: ' . $e->getMessage()]);
-        }
+    // Cek apakah ada file foto yang di-upload
+    $foto = null;
+    if ($request->hasFile('foto')) {
+        $foto = $nik . '.' . $request->file('foto')->getClientOriginalExtension();
+        $folderPath = 'uploads/karyawan/';
+        $request->file('foto')->storeAs($folderPath, $foto, 'public');
     }
+
+    try {
+        // Siapkan data untuk disimpan
+        $data = [
+            'nik' => $nik,
+            'nama_lengkap' => $nama_lengkap,
+            'jabatan' => $jabatan,
+            'no_hp' => $no_hp,
+            'kode_dept' => $kode_dept,
+            'foto' => $foto,
+            'password' => $password
+        ];
+
+        // Simpan data ke database
+        DB::table('karyawan')->insert($data);
+
+        // Berhasil disimpan
+        return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
+    } catch (\Exception $e) {
+        // Tangani exception jika terjadi duplikasi NIK
+        if ($e->getCode() == 23000) {
+            // Pesan error khusus untuk duplikat NIK
+            return Redirect::back()->with(['warning' => 'Data Gagal Disimpan: NIK ' . $nik . ' sudah terdaftar.']);
+        }
+
+        // Jika error lainnya
+        return Redirect::back()->with(['warning' => 'Data Gagal Disimpan: ' . $e->getMessage()]);
+    }
+}
+
+
+
+
 
     public function edit($nik)
     {
