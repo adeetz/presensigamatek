@@ -98,9 +98,6 @@ class KaryawanController extends Controller
     
 
 
-
-
-
     public function edit($nik)
     {
         // Ambil data karyawan berdasarkan NIK
@@ -188,7 +185,7 @@ class KaryawanController extends Controller
                 Storage::disk('public')->delete('uploads/karyawan/' . $karyawan->foto); // Hapus file foto
             }
 
-            $karyawan->delete();
+            $karyawan->forceDelete();
             return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
         } else {
             return Redirect::back()->with(['warning' => 'Data Tidak Ditemukan']);
