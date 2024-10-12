@@ -75,8 +75,8 @@
     <script>
         // Pengaturan webcam
         Webcam.set({
-            height: 480,
-            width: 640,
+            height: window.innerHeight, // Menggunakan tinggi layar perangkat
+            width: window.innerWidth, // Menggunakan lebar layar perangkat
             image_format: 'jpeg',
             jpeg_quality: 80,
         });
@@ -151,7 +151,7 @@
                                 Swal.fire({
                                     title: 'Berhasil!',
                                     text: response
-                                    .message, // Pesan berhasil presensi masuk
+                                        .message, // Pesan berhasil presensi masuk
                                     icon: 'success'
                                 }).then(function() {
                                     setTimeout(function() {
@@ -165,7 +165,7 @@
                                 Swal.fire({
                                     title: 'Berhasil!',
                                     text: response
-                                    .message, // Pesan berhasil presensi pulang
+                                        .message, // Pesan berhasil presensi pulang
                                     icon: 'success'
                                 }).then(function() {
                                     setTimeout(function() {
@@ -179,7 +179,7 @@
                             Swal.fire({
                                 title: 'Error!',
                                 text: response
-                                .message, // Tampilkan pesan error dari server
+                                    .message, // Tampilkan pesan error dari server
                                 icon: 'error'
                             });
                         }
