@@ -5,7 +5,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <h1 class="navbar-brand navbar-brand-autodark">
-            <a href="./">
+            <a href="/panel">
                 <img src="{{ asset('tabler/static/logo.svg') }}" width="110" height="32" alt="Tabler"
                     class="navbar-brand-image">
             </a>
@@ -203,7 +203,7 @@
         <div class="collapse navbar-collapse" id="sidebar-menu">
             <ul class="navbar-nav pt-lg-3">
                 <li class="nav-item">
-                    <a class="nav-link" href="./" aria-label="Home">
+                    <a class="nav-link" href="/panel" aria-label="Home">
                         <span
                             class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
                             <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24"
