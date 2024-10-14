@@ -79,6 +79,7 @@
             width: window.innerWidth, // Menggunakan lebar layar perangkat
             image_format: 'jpeg',
             jpeg_quality: 80,
+            flip_horiz: true // Membalikkan tampilan secara horizontal (mirror)
         });
         Webcam.attach('.webcam-capture');
 
